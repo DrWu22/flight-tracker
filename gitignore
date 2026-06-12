@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+
+# Never commit the config with the real API key
+# (keep a config.json in the repo but with a placeholder key)
+
+# OS files
+.DS_Store
+Thumbs.db
