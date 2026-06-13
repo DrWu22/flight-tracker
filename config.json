@@ -2,21 +2,21 @@
   "serpapi_key": "YOUR_SERPAPI_KEY_HERE",
   "flights": [
     {
-      "id": "TLS_MAD_SHORT",
-      "label": "Toulouse → Madrid (Fri 9 – Mon 12 Oct)",
+      "id": "TLS_MAD_THU_COMBINATIONS",
+      "label": "Toulouse to Madrid (Thu 8 - Mon 12 Oct)",
       "origin": "TLS",
       "destination": "MAD",
-      "outbound_date": "2026-10-09",
+      "outbound_date": "2026-10-08",
       "return_date": "2026-10-12",
       "outbound_after": "16:30",
       "trip_type": "round_trip"
     },
     {
-      "id": "TLS_MAD_LONG",
-      "label": "Toulouse → Madrid (Thu 8 – Mon 12 Oct)",
+      "id": "TLS_MAD_FRI_COMBINATIONS",
+      "label": "Toulouse to Madrid (Fri 9 - Mon 12 Oct)",
       "origin": "TLS",
       "destination": "MAD",
-      "outbound_date": "2026-10-08",
+      "outbound_date": "2026-10-09",
       "return_date": "2026-10-12",
       "outbound_after": "16:30",
       "trip_type": "round_trip"
