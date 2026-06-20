@@ -9,42 +9,60 @@ on:
   # Allows you to trigger the workflow manually from GitHub's website
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
-  track-prices:
+  track-and-publish:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the full repo (including flights.db if it exists)
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: pip install requests openpyxl google-search-results
 
-      # Step 4: Run the price tracker
       - name: Fetch flight prices
         env:
           SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
         run: python tracker.py
 
-      # Step 5: Regenerate the Excel dashboard
       - name: Export Excel dashboard
         run: python export.py
 
-      # Step 6: Commit updated flights.db and flight_prices.xlsx back to repo
-      - name: Commit updated data
+      - name: Generate web dashboard
+        run: python dashboard.py
+
+      - name: Commit updated data and dashboard
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add flights.db flight_prices.xlsx
+          git add flights.db flight_prices.xlsx index.html
           git diff --staged --quiet || git commit -m "Daily price update - $(date +'%Y-%m-%d')"
           git push
+
+      - name: Upload dashboard to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+  deploy-pages:
+    needs: track-and-publish
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
